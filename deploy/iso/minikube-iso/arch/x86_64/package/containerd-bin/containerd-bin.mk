@@ -3,8 +3,8 @@
 # containerd
 #
 ################################################################################
-CONTAINERD_BIN_VERSION = v1.7.15
-CONTAINERD_BIN_COMMIT = 926c9586fe4a6236699318391cd44976a98e31f1
+CONTAINERD_BIN_VERSION = v2.0.0
+CONTAINERD_BIN_COMMIT = 207ad711eabd375a01713109a8a197d197ff6542
 CONTAINERD_BIN_SITE = https://github.com/containerd/containerd/archive
 CONTAINERD_BIN_SOURCE = $(CONTAINERD_BIN_VERSION).tar.gz
 CONTAINERD_BIN_DEPENDENCIES = host-go libgpgme
@@ -32,18 +32,12 @@ define CONTAINERD_BIN_CONFIGURE_CMDS
 endef
 
 define CONTAINERD_BIN_BUILD_CMDS
-	PWD=$(CONTAINERD_BIN_COMPILE_SRC) $(CONTAINERD_BIN_ENV) $(MAKE) $(TARGET_CONFIGURE_OPTS) VERSION=$(CONTAINERD_BIN_VERSION) REVISION=$(CONTAINERD_BIN_COMMIT) -C $(@D) binaries
+	GO=/usr/local/go/bin/go PWD=$(CONTAINERD_BIN_COMPILE_SRC) $(CONTAINERD_BIN_ENV) $(MAKE) $(TARGET_CONFIGURE_OPTS) VERSION=$(CONTAINERD_BIN_VERSION) REVISION=$(CONTAINERD_BIN_COMMIT) -C $(@D) binaries
 endef
 
 define CONTAINERD_BIN_INSTALL_TARGET_CMDS
 	$(INSTALL) -Dm755 \
 		$(@D)/bin/containerd \
-		$(TARGET_DIR)/usr/bin
-	$(INSTALL) -Dm755 \
-		$(@D)/bin/containerd-shim \
-		$(TARGET_DIR)/usr/bin
-	$(INSTALL) -Dm755 \
-		$(@D)/bin/containerd-shim-runc-v1 \
 		$(TARGET_DIR)/usr/bin
 	$(INSTALL) -Dm755 \
 		$(@D)/bin/containerd-shim-runc-v2 \
